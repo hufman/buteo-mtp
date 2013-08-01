@@ -10,9 +10,9 @@ CONFIG += link_pkgconfig debug
 equals(QT_MAJOR_VERSION, 4): {
     CONFIG += mobility
     MOBILITY = systeminfo
-    PKGCONFIG += buteosyncfw contextkit-statefs-qt4
+    PKGCONFIG += contextkit-statefs-qt4
 }
-equals(QT_MAJOR_VERSION, 5): PKGCONFIG += Qt5SystemInfo buteosyncfw5 contextkit-statefs
+equals(QT_MAJOR_VERSION, 5): PKGCONFIG += Qt5SystemInfo contextkit-statefs
 
 #QMAKE_CXXFLAGS += -O0 -Werror
 
