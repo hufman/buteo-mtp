@@ -1,5 +1,6 @@
 *.so
 *.so.*
+*.o
 Makefile*
 *.list
 deviceinfo-test
