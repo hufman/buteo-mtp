@@ -89,7 +89,7 @@ StorageFactory::StorageFactory() :  m_storageId(0), m_storagePluginsPath( plugin
 #endif
 
     void *pluginHandle = 0;
-    QString pluginFullPath = m_storagePluginsPath + "/libfsstorage.so";
+    QString pluginFullPath = m_storagePluginsPath + "/libsimplestorage.so";
     QByteArray ba = pluginFullPath.toUtf8();
 
     pluginHandle = dlopen( ba.constData(), RTLD_NOW );
