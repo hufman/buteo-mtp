@@ -6,6 +6,10 @@
 #include <pthread.h>
 #include <signal.h>
 #include <endian.h>
+#include <unistd.h>
+
+#include <cstdio>
+#include <cstdlib>
 
 #include "trace.h"
 
@@ -268,7 +272,7 @@ void BulkWriterThread::setData(const quint8 *buffer, quint32 dataLen)
     m_buffer = buffer;
     m_dataLen = dataLen;
     m_result = false;
-    m_result_ready.store(0);
+    m_result_ready = 0;
 }
 
 void BulkWriterThread::run()
@@ -285,7 +289,7 @@ void BulkWriterThread::run()
         if(bytesWritten == -1)
         {
             m_result = false;
-            m_result_ready.storeRelease(1);
+            m_result_ready = 1;
             return;
         }
         dataptr += bytesWritten;
@@ -294,12 +298,12 @@ void BulkWriterThread::run()
 
     m_handle = 0;
     m_result = true;
-    m_result_ready.storeRelease(1);
+    m_result_ready = 1;
 }
 
 bool BulkWriterThread::resultReady()
 {
-    return m_result_ready.load() != 0;
+    return m_result_ready != 0;
 }
 
 bool BulkWriterThread::getResult()

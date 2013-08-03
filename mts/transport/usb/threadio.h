@@ -8,6 +8,8 @@
 #include <QPair>
 #include <QList>
 
+#include <pthread.h>
+
 enum mtpfs_status {
     MTPFS_STATUS_OK,
     MTPFS_STATUS_BUSY,
