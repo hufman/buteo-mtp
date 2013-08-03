@@ -41,7 +41,7 @@
 #include "mtpevent.h"
 #include "storagefactory.h"
 #include "trace.h"
-#include "deviceinfoprovider.h"
+#include "deviceinfo.h"
 #include "mtptransporterusb.h"
 #include "mtptransporterdummy.h"
 #include "propertypod.h"
@@ -73,7 +73,7 @@ MTPResponder::MTPResponder() : m_storageServer(0), m_transporter(0), m_copiedObj
     createCommandHandler();
     m_transactionSequence = new MTPTransactionSequence;
 
-    m_devInfoProvider = new DeviceInfoProvider();
+    m_devInfoProvider = new DeviceInfo();
     m_extensionManager = new MTPExtensionManager();
     m_propertyPod = PropertyPod::instance(m_devInfoProvider, m_extensionManager);
     m_propCache = ObjectPropertyCache::instance();
