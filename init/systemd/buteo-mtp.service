@@ -2,7 +2,7 @@
 Description=MTP service
 
 [Service]
-ExecStart=/usr/lib/mtp/start-mtp.sh
+ExecStart=/usr/bin/mtpd
 Restart=always
 RestartSec=1
 Nice=-10
