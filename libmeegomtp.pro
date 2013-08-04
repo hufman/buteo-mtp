@@ -1,10 +1,6 @@
 TEMPLATE = subdirs
 SUBDIRS += mts \
-    mtpserver \
-    test \
-    mts/platform/deviceinfo/unittests \
     mts/platform/storage/simpleplugin \
-    mts/protocol/unittests \
     service \
     init/systemd
 
