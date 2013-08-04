@@ -3,8 +3,5 @@
 *.o
 Makefile*
 *.list
-deviceinfo-test
-storage-test
-protocol-test
-mtp_test
-mtp_service
+mtpd
+*moc_*
