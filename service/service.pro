@@ -4,7 +4,7 @@ DEPENDPATH += .
 INCLUDEPATH += . ../mts
 LIBS += -L../mts -lmeegomtp
 
-QT -= gui
+QT = core
 CONFIG += link_pkgconfig
 
 SOURCES += service.cpp
