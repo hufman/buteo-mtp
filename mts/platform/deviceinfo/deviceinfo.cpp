@@ -249,7 +249,7 @@ DeviceInfo::DeviceInfo( QObject *parent ) :
     QFile fileDst(getDeviceInfoXmlPath());
 #ifndef UT_ON
     QFile fileSrc("/usr/share/mtp/deviceinfo.xml");
-    if( !fileDst.exists() )
+    if(!fileDst.exists() && fileDst.fileName() != fileSrc.fileName())
     {
         fileSrc.copy(m_deviceInfoXmlPath);
     }
@@ -517,9 +517,11 @@ QString DeviceInfo::getDeviceInfoXmlPath()
     if (m_deviceInfoXmlPath.isEmpty()) {
         QString tmpPath = QDir::homePath();
         if (tmpPath.isEmpty()) {
-            qFatal("DeviceInfo: can't determine home directory");
+            MTP_LOG_WARNING("cannot determine home directory");
+            m_deviceInfoXmlPath = "/usr/share/mtp/deviceinfo.xml";
+        } else {
+            m_deviceInfoXmlPath = tmpPath + "/.mtpdeviceinfo.xml";
         }
-        m_deviceInfoXmlPath = tmpPath + "/.mtpdeviceinfo.xml";
     }
     return m_deviceInfoXmlPath;
 }
