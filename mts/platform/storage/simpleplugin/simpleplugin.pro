@@ -7,7 +7,7 @@ TARGET = simplestorage
 
 CONFIG += plugin debug
 #QMAKE_CXXFLAGS += -O0 -Werror
-QT -= gui
+QT = core
 
 DEPENDPATH += . \
               .. \
