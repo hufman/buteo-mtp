@@ -394,16 +394,17 @@ MTPResponseCode SimplePlugin::readData(const ObjHandle &handle,
 	if (!file.seek(offset))
 		return MTP_RESP_GeneralError;
 
+	qint32 len = bufferLen;
 	do {
-		qint32 ret = file.read(buffer, bufferLen);
+		qint32 ret = file.read(buffer, len);
 		if (ret == -1) {
 			file.close();
 			return MTP_RESP_GeneralError;
 		}
 
-		bufferLen -= ret;
+		len -= ret;
 		buffer += ret;
-	} while(bufferLen);
+	} while(len);
 
 	file.close();
 	return MTP_RESP_OK;
