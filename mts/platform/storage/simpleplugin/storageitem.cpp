@@ -1,5 +1,7 @@
 #include "storageitem.h"
 
+#include <QDir>
+#include <QFile>
 #include <QFileInfo>
 
 StorageItem::StorageItem(ObjHandle handle, QString path, quint32 storageId) :
@@ -58,6 +60,22 @@ void StorageItem::unlink(void)
 	m_nextSibling = 0;
 	m_parent = 0;
 	m_objectInfo.mtpParentObject = 0;
+}
+
+bool StorageItem::deleteFromFS(void)
+{
+	/* We don't delete the top directory */
+	if (!m_handle)
+		return false;
+
+	/* non-empty directory */
+	if (isFolder()) {
+		QDir dir(m_parent->getPath());
+		return dir.rmdir(m_path);
+	}
+
+	QFile file(m_path);
+	return file.remove();
 }
 
 MTPResponseCode StorageItem::getProperty(MTPObjPropertyCode propCode,

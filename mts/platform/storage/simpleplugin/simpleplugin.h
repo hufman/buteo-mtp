@@ -59,6 +59,7 @@ private:
 	MTPResponseCode getObjectPropertyValueFromStorage(const ObjHandle &handle,
 				MTPObjPropertyCode propCode,
 				QVariant &value, MTPDataType type);
+	bool deleteFromFS(StorageItem *item);
 };
 }
 

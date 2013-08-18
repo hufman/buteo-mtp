@@ -26,12 +26,16 @@ namespace meegomtp1dot0
 			QFile *getFile() { return m_file; }
 			void setFile(QFile *file) { m_file = file; }
 
+			bool isFolder() { return m_objectInfo.mtpObjectFormat
+				== MTP_OBF_FORMAT_Association; }
+
 			MTPResponseCode getProperty(MTPObjPropertyCode propCode,
 						QVariant &value);
 
 			void populateInfo(quint32 storageId);
 			void link(StorageItem *parent);
 			void unlink();
+			bool deleteFromFS();
 
 		private:
 			ObjHandle m_handle; //< the item's handle

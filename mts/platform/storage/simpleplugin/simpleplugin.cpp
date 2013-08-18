@@ -11,7 +11,7 @@ SimplePlugin::SimplePlugin(quint32 storageId, MTPStorageType storageType,
 {
 	MTP_FUNC_TRACE();
 	m_storageInfo.storageType = storageType;
-	m_storageInfo.accessCapability = MTP_STORAGE_ACCESS_ReadOnly_NoDel;
+	m_storageInfo.accessCapability = MTP_STORAGE_ACCESS_ReadWrite;
 	m_storageInfo.filesystemType = MTP_FILE_SYSTEM_TYPE_GenHier;
 	m_storageInfo.freeSpaceInObjects = 0xFFFFFFFF;
 	m_storageInfo.storageDescription = storageDescription;
@@ -158,11 +158,42 @@ MTPResponseCode SimplePlugin::addItem(ObjHandle &parentHandle,
 	return addFileToStorage(item, parent, false, true);
 }
 
+bool SimplePlugin::deleteFromFS(StorageItem *item)
+{
+	m_handlesMap.remove(item->getHandle());
+	m_pathNamesMap.remove(item->getPath());
+
+	if (item->isFolder())
+		for (StorageItem *it = item->getFirstChild();
+					it; it = item->getFirstChild())
+			if (!deleteFromFS(it))
+				return false;
+
+	bool ret = item->deleteFromFS();
+	if (ret) {
+		item->unlink();
+		delete item;
+	}
+
+	return ret;
+}
+
 MTPResponseCode SimplePlugin::deleteItem(const ObjHandle& handle,
 			const MTPObjFormatCode& formatCode)
 {
 	MTP_FUNC_TRACE();
-	return MTP_RESP_GeneralError;
+
+	if (!checkHandle(handle))
+		return MTP_RESP_GeneralError;
+
+	StorageItem *item = m_handlesMap[handle];
+	if (!item)
+		return MTP_RESP_GeneralError;
+
+	if (!deleteFromFS(item))
+		return MTP_RESP_AccessDenied;
+
+	return MTP_RESP_OK;
 }
 
 MTPResponseCode SimplePlugin::getObjectHandles(const MTPObjFormatCode& formatCode,
