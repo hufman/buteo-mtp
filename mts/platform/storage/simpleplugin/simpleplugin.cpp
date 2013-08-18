@@ -439,10 +439,40 @@ MTPResponseCode SimplePlugin::getObjectPropertyValue(const ObjHandle &handle,
 }
 
 MTPResponseCode SimplePlugin::setObjectPropertyValue(const ObjHandle &handle,
-			QList<MTPObjPropDescVal> &propValList, bool sendObjectPropList)
+			QList<MTPObjPropDescVal> &propValList,
+			bool sendObjectPropList __attribute__((unused)))
 {
 	MTP_FUNC_TRACE();
-	return MTP_RESP_GeneralError;
+	MTPResponseCode ret = MTP_RESP_ObjectProp_Not_Supported;
+
+	if (!checkHandle(handle))
+		return MTP_RESP_InvalidObjectHandle;
+
+	StorageItem *item = m_handlesMap[handle];
+	if (!item)
+		return MTP_RESP_GeneralError;
+
+	for (QList<MTPObjPropDescVal>::iterator it = propValList.begin();
+				it != propValList.end(); ++it) {
+		const MtpObjPropDesc *prop = it->propDesc;
+
+		/* Only support modifying filenames for now */
+		if (prop->uPropCode != MTP_OBJ_PROP_Obj_File_Name)
+			continue;
+
+		QString name = QString(it->propVal.value<QString>());
+
+		/* Don't rename the file if a file with the same name exists */
+		if (m_pathNamesMap.contains(item->getParent()->getPath() + "/" + name))
+			return MTP_RESP_Invalid_ObjectProp_Value;
+
+		m_pathNamesMap.remove(item->getPath());
+		item->rename(name);
+		m_pathNamesMap[item->getPath()] = handle;
+		ret = MTP_RESP_OK;
+	}
+
+	return ret;
 }
 
 void SimplePlugin::getLargestObjectHandle(ObjHandle& handle)

@@ -36,6 +36,7 @@ namespace meegomtp1dot0
 			void link(StorageItem *parent);
 			void unlink();
 			bool deleteFromFS();
+			void rename(const QString &filename);
 
 		private:
 			ObjHandle m_handle; //< the item's handle

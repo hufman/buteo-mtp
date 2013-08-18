@@ -62,6 +62,18 @@ void StorageItem::unlink(void)
 	m_objectInfo.mtpParentObject = 0;
 }
 
+void StorageItem::rename(const QString &filename)
+{
+	QString path = m_path;
+	path.truncate(path.lastIndexOf("/") + 1);
+	path += filename;
+
+	QDir dir;
+	dir.rename(m_path, path);
+	m_objectInfo.mtpFileName = filename;
+	m_path = path;
+}
+
 bool StorageItem::deleteFromFS(void)
 {
 	/* We don't delete the top directory */
