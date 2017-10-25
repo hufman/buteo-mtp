@@ -1,13 +1,14 @@
 #ifndef MTP1DESCRIPTORS_H
 #define MTP1DESCRIPTORS_H
 
+#include <asm/byteorder.h>
 #include <linux/usb/functionfs.h>
 #include "ptp.h"
 
-#define cpu_to_le16(x)  htole16(x)
-#define cpu_to_le32(x)  htole32(x)
-#define le32_to_cpu(x)  le32toh(x)
-#define le16_to_cpu(x)  le16toh(x)
+#define cpu_to_le16(x) __constant_cpu_to_le16(x)
+#define cpu_to_le32(x) __constant_cpu_to_le32(x)
+#define le16_to_cpu(x) __constant_le16_to_cpu(x)
+#define le32_to_cpu(x) __constant_le32_to_cpu(x)
 
 #define MTP_STRING_DESCRIPTOR "MTP"
 #define ENGLISH_US 0x0409
