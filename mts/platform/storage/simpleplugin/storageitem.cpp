@@ -1,3 +1,4 @@
+#include "simpleplugin.h"
 #include "storageitem.h"
 
 #include <QDir>
@@ -16,8 +17,16 @@ StorageItem::StorageItem(ObjHandle handle, QString path, quint32 storageId) :
 	m_objectInfo.mtpKeywords = "";
 
 	QFileInfo info(m_path);
-	if (info.isFile())
+	if (info.isFile()) {
 		m_objectInfo.mtpObjectCompressedSize = info.size();
+
+		// guess filetype by extension
+		std::string ext = info.suffix().toLower().toStdString();
+		std::map<std::string,MTPObjFormatCode>::const_iterator found = ExtensionMTPFormats.find(ext);
+		if (found != ExtensionMTPFormats.end()) {
+			m_objectInfo.mtpObjectFormat = found->second;
+		}
+	}
 	else if (info.isDir())
 		m_objectInfo.mtpObjectFormat = MTP_OBF_FORMAT_Association;
 }

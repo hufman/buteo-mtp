@@ -58,6 +58,52 @@ private:
 				QVariant &value, MTPDataType type);
 	bool deleteFromFS(StorageItem *item);
 };
+
+const std::map<std::string, MTPObjFormatCode> ExtensionMTPFormats = {
+	// Text
+	{"txt", MTP_OBF_FORMAT_Text},
+	{"htm", MTP_OBF_FORMAT_HTML},
+	{"html", MTP_OBF_FORMAT_HTML},
+	{"vcs", MTP_OBF_FORMAT_vCal1},
+	{"vcf", MTP_OBF_FORMAT_vCard3},
+	// Audio
+	{"mp3", MTP_OBF_FORMAT_MP3},
+	{"ogg", MTP_OBF_FORMAT_OGG},
+	{"aac", MTP_OBF_FORMAT_AAC},
+	{"flac", MTP_OBF_FORMAT_FLAC},
+	{"wma", MTP_OBF_FORMAT_WMA},
+	{"wav", MTP_OBF_FORMAT_WAV},
+	{"aif", MTP_OBF_FORMAT_AIFF},
+	{"aiff", MTP_OBF_FORMAT_AIFF},
+	{"aa", MTP_OBF_FORMAT_Audible},
+	{"aax", MTP_OBF_FORMAT_Audible},
+	// Picture
+	{"jpg", MTP_OBF_FORMAT_JFIF},
+	{"jpe", MTP_OBF_FORMAT_JFIF},
+	{"jpeg", MTP_OBF_FORMAT_JFIF},
+	{"jfif", MTP_OBF_FORMAT_JFIF},
+	{"gif", MTP_OBF_FORMAT_GIF},
+	{"png", MTP_OBF_FORMAT_PNG},
+	{"tif", MTP_OBF_FORMAT_TIFF},
+	{"tiff", MTP_OBF_FORMAT_TIFF},
+	{"bmp", MTP_OBF_FORMAT_BMP},
+	{"dib", MTP_OBF_FORMAT_BMP},
+	{"jp2", MTP_OBF_FORMAT_JP2},
+	{"jpx", MTP_OBF_FORMAT_JPX},
+	{"fpx", MTP_OBF_FORMAT_FlashPix},
+	{"pcd", MTP_OBF_FORMAT_PCD},
+	{"pic", MTP_OBF_FORMAT_PICT},
+	{"pct", MTP_OBF_FORMAT_PICT},
+	{"pict", MTP_OBF_FORMAT_PICT},
+	// Video
+	{"avi", MTP_OBF_FORMAT_WAV},
+	{"mpg", MTP_OBF_FORMAT_MPEG},
+	{"mpeg", MTP_OBF_FORMAT_MPEG},
+	{"wmv", MTP_OBF_FORMAT_WMV},
+	{"mp4", MTP_OBF_FORMAT_MP4_Container},
+	{"3gp", MTP_OBF_FORMAT_3GP_Container},
+	{"3gpp", MTP_OBF_FORMAT_3GP_Container},
+};
 }
 
 using namespace meegomtp1dot0;
