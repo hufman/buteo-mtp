@@ -17,9 +17,6 @@ public:
 	SimplePlugin(quint32 storageId = 0, MTPStorageType storageType = MTP_STORAGE_TYPE_FixedRAM,
 				QString storagePath = "", QString volumeLabel = "", QString storageDescription = "");
 
-	/// Destructor.
-	~SimplePlugin();
-
 	bool enumerateStorage();
 
 	MTPResponseCode addItem( ObjHandle &parentHandle, ObjHandle &handle, MTPObjectInfo *info );
