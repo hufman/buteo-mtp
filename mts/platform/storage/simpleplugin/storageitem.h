@@ -2,6 +2,7 @@
 #define STORAGEITEM_H
 
 #include "mtptypes.h"
+#include "propertylookup.h"
 #include <QFile>
 #include <QString>
 
@@ -10,7 +11,8 @@ namespace meegomtp1dot0
 	class StorageItem
 	  {
 		public:
-			StorageItem(ObjHandle handle, QString path, quint32 storageId);
+			StorageItem(ObjHandle handle, QString path, quint32 storageId,
+			            PropertyLookup *propertyLookup);
 			~StorageItem() { }
 
 			ObjHandle& getHandle() { return m_handle; }
@@ -43,6 +45,7 @@ namespace meegomtp1dot0
 			QString m_path; //< the pathname by which this item is identified in the storage.
 			QFile *m_file;
 			MTPObjectInfo m_objectInfo; ///< the objectinfo dataset for this item.
+			PropertyLookup* m_propertyLookup;
 
 			StorageItem *m_parent; //< this item's parent.
 			StorageItem *m_firstChild; //< this item's first child.

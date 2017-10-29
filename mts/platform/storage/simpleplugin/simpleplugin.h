@@ -4,6 +4,7 @@
 #include "mtptypes.h"
 #include "storageplugin.h"
 #include "storageitem.h"
+#include "propertylookup.h"
 #include "trace.h"
 
 namespace meegomtp1dot0
@@ -15,7 +16,8 @@ class SimplePlugin : public StoragePlugin
 public:
 	// Constructor.
 	SimplePlugin(quint32 storageId = 0, MTPStorageType storageType = MTP_STORAGE_TYPE_FixedRAM,
-				QString storagePath = "", QString volumeLabel = "", QString storageDescription = "");
+				QString storagePath = "", QString volumeLabel = "", QString storageDescription = "",
+				PropertyLookup *propertyLookup = NULL);
 
 	bool enumerateStorage();
 
@@ -47,6 +49,7 @@ private:
 	StorageItem *m_root;
 	QHash<ObjHandle, StorageItem*> m_handlesMap;
 	QHash<QString, ObjHandle> m_pathNamesMap;
+	PropertyLookup *m_propertyLookup;
 
 	MTPResponseCode addDirToStorage(StorageItem *&item,
 				StorageItem *&parent, bool isRootDir = false,

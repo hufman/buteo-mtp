@@ -7,7 +7,7 @@ TARGET = simplestorage
 
 CONFIG += plugin debug
 #QMAKE_CXXFLAGS += -O0 -Werror
-QT = core
+QT = core sql
 
 DEPENDPATH += . \
               .. \
@@ -26,9 +26,11 @@ INCLUDEPATH += . \
 # Input
 HEADERS += simpleplugin.h \
 		   storageitem.h \
+		   sqlproperties.h \
            ../storageplugin.h
 
 SOURCES += simpleplugin.cpp \
+			sqlproperties.cpp \
 			storageitem.cpp
 
 #install

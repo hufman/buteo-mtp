@@ -1,11 +1,13 @@
 #include "simpleplugin.h"
 #include "storageitem.h"
+#include "propertylookup.h"
 
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 
-StorageItem::StorageItem(ObjHandle handle, QString path, quint32 storageId) :
+StorageItem::StorageItem(ObjHandle handle, QString path, quint32 storageId,
+                         PropertyLookup *propertyLookup) :
 	m_handle(handle), m_path(path), m_file(0), m_parent(0),
 	m_firstChild(0), m_nextSibling(0)
 {
@@ -15,6 +17,8 @@ StorageItem::StorageItem(ObjHandle handle, QString path, quint32 storageId) :
 	m_objectInfo.mtpCaptureDate = "20100623	104655";
 	m_objectInfo.mtpModificationDate = "20130724	114756";
 	m_objectInfo.mtpKeywords = "";
+
+	m_propertyLookup = propertyLookup;
 
 	QFileInfo info(m_path);
 	if (info.isFile()) {
@@ -239,7 +243,10 @@ MTPResponseCode StorageItem::getProperty(MTPObjPropertyCode propCode,
 #endif
 
 		default:
-			return MTP_RESP_ObjectProp_Not_Supported;
+			if (m_propertyLookup != NULL)
+				return m_propertyLookup->getProperty(m_path, propCode, value);
+			else
+				return MTP_RESP_ObjectProp_Not_Supported;
 	}
 
 	return MTP_RESP_OK;

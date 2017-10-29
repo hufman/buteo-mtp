@@ -3,10 +3,12 @@
 #include <QDir>
 
 #include "simpleplugin.h"
+#include "propertylookup.h"
 
 SimplePlugin::SimplePlugin(quint32 storageId, MTPStorageType storageType,
 			QString storagePath, QString volumeLabel,
-			QString storageDescription) : m_storageId(storageId),
+			QString storageDescription,
+			PropertyLookup *propertyLookup) : m_storageId(storageId),
 	m_uniqueObjectHandle(0), m_root(0)
 {
 	MTP_FUNC_TRACE();
@@ -19,6 +21,7 @@ SimplePlugin::SimplePlugin(quint32 storageId, MTPStorageType storageType,
 	m_storageInfo.maxCapacity = 0;
 	m_storageInfo.freeSpace = 0;
 	m_storagePath = storagePath;
+	m_propertyLookup = propertyLookup;
 }
 
 MTPResponseCode SimplePlugin::addDirToStorage(StorageItem *&item,
@@ -57,7 +60,7 @@ MTPResponseCode SimplePlugin::addDirToStorage(StorageItem *&item,
 		QFileInfo dirContent = dirContents.at(i);
 		StorageItem *dirEntry = new StorageItem(++m_uniqueObjectHandle,
 					dirContent.absoluteFilePath(),
-					m_storageId);
+					m_storageId, m_propertyLookup);
 
 		if (dirContent.isFile())
 			addFileToStorage(dirEntry, item, sendEvent, createIfNotExist);
@@ -118,7 +121,7 @@ MTPResponseCode SimplePlugin::addFileToStorage(StorageItem *&item,
 bool SimplePlugin::enumerateStorage(void)
 {
 	MTP_FUNC_TRACE();
-	m_root = new StorageItem(ObjHandle(0), m_storagePath, m_storageId);
+	m_root = new StorageItem(ObjHandle(0), m_storagePath, m_storageId, NULL);
 	addDirToStorage(m_root, m_root, true);
 	return true;
 }
@@ -148,7 +151,7 @@ MTPResponseCode SimplePlugin::addItem(ObjHandle &parentHandle,
 		return MTP_RESP_GeneralError;
 
 	StorageItem *item = new StorageItem(++m_uniqueObjectHandle,
-				path, m_storageId);
+				path, m_storageId, m_propertyLookup);
 	item->setInfo(*info);
 	handle = item->getHandle();
 
